@@ -1,0 +1,146 @@
+class: Workflow
+cwlVersion: v1.1
+label: somatic_mutation_analysis
+$namespaces:
+  sbg: https://sevenbridges.com
+
+requirements:
+- class: ScatterFeatureRequirement
+- class: InlineJavascriptRequirement
+- class: StepInputExpressionRequirement
+
+inputs:
+- id: maf
+  type: File[]?
+  sbg:x: -70
+  sbg:y: 205
+
+outputs:
+- id: oncoplots
+  type: File?
+  outputSource:
+  - oncoplot/oncoplot
+  sbg:x: 574.1786499023438
+  sbg:y: 472
+- id: summary_plot
+  type: File?
+  outputSource:
+  - maftools_read_and_summary/summary_plot
+  sbg:x: 318.9014892578125
+  sbg:y: 86
+- id: signatures_plot
+  type: File?
+  outputSource:
+  - somatic_signatures/signatures_plot
+  sbg:x: 619.1786499023438
+  sbg:y: 0
+- id: signature_heatmap
+  type: File?
+  outputSource:
+  - somatic_signatures/signature_heatmap
+  sbg:x: 619.1786499023438
+  sbg:y: 107
+- id: cophenetic_plot
+  type: File?
+  outputSource:
+  - somatic_signatures/cophenetic_plot
+  sbg:x: 629.1786499023438
+  sbg:y: 240
+- id: APOBEC
+  type: File?
+  outputSource:
+  - somatic_signatures/APOBEC
+  sbg:x: 633.1786499023438
+  sbg:y: 355
+
+steps:
+- id: oncoplot
+  label: oncoplot
+  in:
+  - id: maf_object
+    source: maftools_read_and_summary/maf_object
+  scatter:
+  - maf_object
+  run: somatic_mutation_analysis.steps/oncoplot.cwl
+  out:
+  - id: oncoplot
+  sbg:x: 318.9014892578125
+  sbg:y: 342
+- id: maftools_read_and_summary
+  label: maftools_read_and_summary
+  in:
+  - id: maf
+    source: maf
+  scatter:
+  - maf
+  run: somatic_mutation_analysis.steps/maftools_read_and_summary.cwl
+  out:
+  - id: summary_plot
+  - id: maf_object
+  sbg:x: 105
+  sbg:y: 207
+- id: somatic_signatures
+  label: somatic_signatures
+  in:
+  - id: maf_object
+    source: maftools_read_and_summary/maf_object
+  scatter:
+  - maf_object
+  run: somatic_mutation_analysis.steps/somatic_signatures.cwl
+  out:
+  - id: APOBEC
+  - id: cophenetic_plot
+  - id: signature_heatmap
+  - id: signatures_plot
+  sbg:x: 318.9014892578125
+  sbg:y: 214
+sbg:appVersion:
+- v1.1
+sbg:content_hash: a4ccf4aed2e6e1945e9839f6783e651d34dda2bf34ac969098081d6e370d79e49
+sbg:contributors:
+- david.roberson
+sbg:createdBy: david.roberson
+sbg:createdOn: 1611589223
+sbg:id: david.roberson/maftools-demo/somatic-mutation-analysis/6
+sbg:image_url:
+sbg:latestRevision: 6
+sbg:modifiedBy: david.roberson
+sbg:modifiedOn: 1611595780
+sbg:original_source: |-
+  https://cgc-api.sbgenomics.com/v2/apps/david.roberson/maftools-demo/somatic-mutation-analysis/6/raw/
+sbg:project: david.roberson/maftools-demo
+sbg:projectName: maftools demo
+sbg:publisher: sbg
+sbg:revision: 6
+sbg:revisionNotes: ''
+sbg:revisionsInfo:
+- sbg:modifiedBy: david.roberson
+  sbg:modifiedOn: 1611589223
+  sbg:revision: 0
+  sbg:revisionNotes:
+- sbg:modifiedBy: david.roberson
+  sbg:modifiedOn: 1611589281
+  sbg:revision: 1
+  sbg:revisionNotes: ''
+- sbg:modifiedBy: david.roberson
+  sbg:modifiedOn: 1611593140
+  sbg:revision: 2
+  sbg:revisionNotes: ''
+- sbg:modifiedBy: david.roberson
+  sbg:modifiedOn: 1611594690
+  sbg:revision: 3
+  sbg:revisionNotes: ''
+- sbg:modifiedBy: david.roberson
+  sbg:modifiedOn: 1611595018
+  sbg:revision: 4
+  sbg:revisionNotes: ''
+- sbg:modifiedBy: david.roberson
+  sbg:modifiedOn: 1611595386
+  sbg:revision: 5
+  sbg:revisionNotes: ''
+- sbg:modifiedBy: david.roberson
+  sbg:modifiedOn: 1611595780
+  sbg:revision: 6
+  sbg:revisionNotes: ''
+sbg:sbgMaintained: false
+sbg:validationErrors: []
